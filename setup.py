@@ -22,7 +22,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'ipd_cal_checker = ipd_calib.ipd_cal_checker_node:main'
+            'ipd_cal_checker = ipd_calib.ipd_cal_checker_node:main',
+            'ipd_ext_checker = ipd_calib.ipd_ext_checker_node:main'
         ],
     },
 )

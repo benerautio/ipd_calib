@@ -71,18 +71,17 @@ def generate_launch_description():
     # Unset launch prefix to prevent other process from getting this setting.
     ld.add_action(launch.actions.SetLaunchConfiguration('launch-prefix', ''))
 
-    # check_cal_exists = launch.actions.ExecuteProcess(cmd=[sys.executable,'./check_cam_cal.py'])
-    # ld.add_action(check_cal_exists)
+    #NEED INFO FROM SAM AND ALEX
+    #ENTRYPOINT NAME (executable, setup.py)
+    #PACKAGE NAME (package)
+    #ACTUAL NODE NAME (in src)
 
-    # Launch Description
-    #ld = launch.LaunchDescription()
-
-    # cam_feed = Node(
-    #     name = 'ipd_rawimg',
-    #     package = 'trimble_ipd',
-    #     executable = 'ipd_rawimg_pubsub',
-    #     output = 'screen'
-    # )
+    cam_feed = Node(
+        name = 'ipd_rawimg_pub',
+        package = 'trimble_ipd',
+        executable = 'ipd_rawimg_pub',
+        output = 'screen'
+    )
 
     cal_checker_node = Node(
         name = 'ipd_cal_checker',
@@ -91,16 +90,46 @@ def generate_launch_description():
         output = 'screen'
     )
 
+    ext_checker_node = Node(
+        name = 'ipd_ext_checker',
+        package = 'ipd_calib',
+        executable = 'ipd_ext_checker',
+        output = 'screen'
+    )
+    pose_estimation_node = Node(
+        name = 'ipd_pose_pub',
+        package = 'trimble_ipd',
+        executable = 'ipd_pose_pub'
+    )
+
     cal_exit_event_handler = launch.actions.RegisterEventHandler(
         launch.event_handlers.OnProcessExit(
             target_action = cal_checker_node,
             on_exit = [
                 LogInfo(msg='Calibration parameters found'),
-                EmitEvent(event=Shutdown(reason='test done'))
+                #EmitEvent(event=Shutdown(reason='test done')),
+                ext_checker_node
             ]
         )
     )
+
+    ext_exit_event_handler = launch.actions.RegisterEventHandler(
+        launch.event_handlers.OnProcessExit(
+            target_action = ext_checker_node,
+            on_exit = [
+                LogInfo(msg='Extrinsic calibration parameters found'),
+                #pose_estimation_node
+                EmitEvent(event=Shutdown(reason='test done')),
+            ]
+        )
+    )
+
+    #add event handlers
     ld.add_action(cal_exit_event_handler)
+    ld.add_action(ext_exit_event_handler)
+
+    #start the nodes
+    #ld.add_action(cam_feed)
     ld.add_action(cal_checker_node)
 
     # ld.add_action(launch.actions.RegisterEventHandler(launch.event_handlers.OnProcessExit(
