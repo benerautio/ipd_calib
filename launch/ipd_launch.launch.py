@@ -44,6 +44,13 @@ import launch_ros.events
 # The CSI cam should be publish its raw images to some topic since it is required for cal
 # In the future: need to run some tests to ensure that the camera works before we attempt to stream its feed
 
+#to see images, use image_tools
+#$ ros2 run image_tools showimage --ros-args --remap image:=/visionSensorData
+#viewing transforms:
+#ros2 run rviz2 rviz2
+# or view frames
+#ros2 run tf2_tools view_frames
+
 def generate_launch_description():
 
     launch.logging.launch_config.log_handler_factory = \
