@@ -109,6 +109,18 @@ def generate_launch_description():
         executable = 'ipd_pose_pub'
     )
 
+    int_cal_service = Node(
+        name = 'set_int_node',
+        package = 'set_int_cal',
+        executable = 'set_int_node'
+    )
+
+    ext_cal_service = Node(
+        name = 'set_ext_node',
+        package = 'set_ext_cal',
+        executable = 'set_ext_node'
+    )
+
     cal_exit_event_handler = launch.actions.RegisterEventHandler(
         launch.event_handlers.OnProcessExit(
             target_action = cal_checker_node,
@@ -136,8 +148,11 @@ def generate_launch_description():
     ld.add_action(ext_exit_event_handler)
 
     #start the nodes
-    #ld.add_action(cam_feed)
+    ld.add_action(cam_feed)
+    ld.add_action(int_cal_service)
+    ld.add_action(ext_cal_service)
     ld.add_action(cal_checker_node)
+    
 
     # ld.add_action(launch.actions.RegisterEventHandler(launch.event_handlers.OnProcessExit(
     #     on_exit=[launch.actions.LogInfo(msg=[

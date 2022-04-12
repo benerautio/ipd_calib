@@ -8,9 +8,9 @@ from os.path import exists
 
 #eventually need to make this some sort of var?
 #or pass in some other way?
-CAL_FILE = 'cam_cal.txt'
+CAL_FILE = 'cam_cal.json'
 SAVE_PATH = '/home'
-USER = os.getlogin()
+USER = ''
 CAL_PATH = os.path.join(SAVE_PATH, USER,CAL_FILE)
 
 class CheckCalNode(Node):
