@@ -2,6 +2,7 @@ from http.server import executable
 from launch_ros.actions import Node
 import platform
 import sys
+import os
 
 import launch
 from typing import cast
@@ -83,6 +84,11 @@ def generate_launch_description():
     #PACKAGE NAME (package)
     #ACTUAL NODE NAME (in src)
 
+    config_ext = os.path.join(
+        '/home',
+        'ext_cal.yaml'
+    )
+
     cam_feed = Node(
         name = 'ipd_rawimg_pub',
         package = 'trimble_ipd',
@@ -104,9 +110,9 @@ def generate_launch_description():
         output = 'screen'
     )
     pose_estimation_node = Node(
-        name = 'ipd_pose_pub',
+        name = 'ipd_pose_estimator',
         package = 'trimble_ipd',
-        executable = 'ipd_pose_pub'
+        executable = 'ipd_pose_estimator'
     )
 
     int_cal_service = Node(
@@ -119,6 +125,13 @@ def generate_launch_description():
         name = 'set_ext_node',
         package = 'set_ext_cal',
         executable = 'set_ext_node'
+    )
+
+    static_ext_broadcaster = Node(
+        name = 'static_tf2_py',
+        executable = 'static_tf2_py',
+        package = "static_tf2_py",
+        #parameters = [config_ext]
     )
 
     cal_exit_event_handler = launch.actions.RegisterEventHandler(
@@ -137,7 +150,8 @@ def generate_launch_description():
             target_action = ext_checker_node,
             on_exit = [
                 LogInfo(msg='Extrinsic calibration parameters found'),
-                #pose_estimation_node
+                pose_estimation_node,
+                static_ext_broadcaster,
                 EmitEvent(event=Shutdown(reason='test done')),
             ]
         )
@@ -149,20 +163,10 @@ def generate_launch_description():
 
     #start the nodes
     ld.add_action(cam_feed)
-    ld.add_action(int_cal_service)
-    ld.add_action(ext_cal_service)
-    ld.add_action(cal_checker_node)
+    # ld.add_action(int_cal_service)
+    # ld.add_action(ext_cal_service)
+    # ld.add_action(cal_checker_node)
     
-
-    # ld.add_action(launch.actions.RegisterEventHandler(launch.event_handlers.OnProcessExit(
-    #     on_exit=[launch.actions.LogInfo(msg=[
-    #         'Launch was asked to shutdown: ',
-    #         launch.substitutions.LocalSubstitution('event.reason'),
-    #     ])],
-    # )))
-
-
-
     print('Starting introspection of launch description...')
     print('')
 

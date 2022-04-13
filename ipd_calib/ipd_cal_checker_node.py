@@ -8,7 +8,7 @@ from os.path import exists
 
 #eventually need to make this some sort of var?
 #or pass in some other way?
-CAL_FILE = 'cam_cal.json'
+CAL_FILE = 'cam_cal.yaml'
 SAVE_PATH = '/home'
 USER = ''
 CAL_PATH = os.path.join(SAVE_PATH, USER,CAL_FILE)
