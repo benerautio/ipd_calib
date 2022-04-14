@@ -1,0 +1,25 @@
+/static_tf_cam_tractor:
+  child_frame_id: Tractor
+  frame_id: Camera
+  qos_overrides:
+  /parameter_events:
+  publisher:
+  depth: 1000
+  durability: volatile
+  history: keep_last
+  reliability: reliable
+  /tf_static:
+  publisher:
+  depth: 1
+  history: keep_last
+  reliability: reliable
+  rotation:
+    w: 1.0
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  translation:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  use_sim_time: false
