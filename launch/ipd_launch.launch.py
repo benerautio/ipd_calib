@@ -112,7 +112,7 @@ def generate_launch_description():
     pose_estimation_node = Node(
         name = 'ipd_pose_estimator',
         package = 'trimble_ipd',
-        executable = 'ipd_pose_estimator'
+        executable = 'ipd_pose_estimator',
     )
 
     int_cal_service = Node(
@@ -152,7 +152,7 @@ def generate_launch_description():
                 LogInfo(msg='Extrinsic calibration parameters found'),
                 pose_estimation_node,
                 static_ext_broadcaster,
-                EmitEvent(event=Shutdown(reason='test done')),
+                #EmitEvent(event=Shutdown(reason='test done')),
             ]
         )
     )
@@ -163,9 +163,9 @@ def generate_launch_description():
 
     #start the nodes
     ld.add_action(cam_feed)
-    # ld.add_action(int_cal_service)
-    # ld.add_action(ext_cal_service)
-    # ld.add_action(cal_checker_node)
+    ld.add_action(int_cal_service)
+    ld.add_action(ext_cal_service)
+    ld.add_action(cal_checker_node)
     
     print('Starting introspection of launch description...')
     print('')
