@@ -134,6 +134,12 @@ def generate_launch_description():
         #parameters = [config_ext]
     )
 
+    demo_listener = Node(
+        name = 'demo_listener',
+        executable = 'demo_listener',
+        package = 'trimble_ipd',
+    )
+
     cal_exit_event_handler = launch.actions.RegisterEventHandler(
         launch.event_handlers.OnProcessExit(
             target_action = cal_checker_node,
@@ -152,6 +158,7 @@ def generate_launch_description():
                 LogInfo(msg='Extrinsic calibration parameters found'),
                 pose_estimation_node,
                 static_ext_broadcaster,
+                demo_listener,
                 #EmitEvent(event=Shutdown(reason='test done')),
             ]
         )
