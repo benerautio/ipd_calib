@@ -156,7 +156,7 @@ def generate_launch_description():
             target_action = ext_checker_node,
             on_exit = [
                 LogInfo(msg='Extrinsic calibration parameters found'),
-                pose_estimation_node,
+                #pose_estimation_node,
                 static_ext_broadcaster,
                 demo_listener,
                 #EmitEvent(event=Shutdown(reason='test done')),
