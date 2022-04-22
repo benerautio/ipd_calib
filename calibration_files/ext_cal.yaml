@@ -14,12 +14,12 @@
   history: keep_last
   reliability: reliable
   rotation:
-    w: 1.0
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 0.6529950109452755
+    y: -0.6535152155233372
+    z: 0.2705537882292778
+    w: 0.2707693232898674
   translation:
     x: 0.0
-    y: 0.0
-    z: 0.0
+    y: 1524.0
+    z: 1524.0
   use_sim_time: false
